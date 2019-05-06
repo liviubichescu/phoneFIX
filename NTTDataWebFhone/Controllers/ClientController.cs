@@ -1,37 +1,31 @@
-﻿using PhoneFix.BLL.Services.Client;
-using PhoneFix.BLL.Services.Client.DTO;
-using System.Net.Http;
+﻿
+using PhoneFix.BLL.Services.ClientModelDTO;
+using PhoneFix.BLL.Services.ClientService;
 using System.Web.Http;
 
 
 namespace NTTDataWebFhone.Controllers
 {
-    public class ClientController:ApiController
+    [Authorize]
+    public class ClientController : ApiController
     {
         private ClientServices clientSevices = new ClientServices();
 
+        
         [HttpGet]
-        public IHttpActionResult getClients()
+        public IHttpActionResult getClients([FromUri] string filter)
         {
-            System.Diagnostics.Debug.WriteLine("This is my getClients messaageeeeee!!!!!!!!!!!!! ");
-            return Ok(clientSevices.getClients());
-        }
-
-
-        // GET: api/Client/5
-        public string Get(int id)
-        {
-            return "value";
+            System.Diagnostics.Debug.WriteLine("This is my getClients messaageeeeee!! + my filter = " + filter);
+            return Ok(clientSevices.getClients(filter));
         }
 
         // POST: api/Client
         [HttpPost]
-        public IHttpActionResult Post([FromBody]ClientDTO client)
+        public IHttpActionResult PostClient([FromBody]ClientDTO client)
         {
            System.Diagnostics.Debug.WriteLine("This is my messaageeeeee "+client.firstname+" " + client.lastname);
 
-            clientSevices.addClient(client);
-            return Ok(client);
+            return Ok(clientSevices.AddClient(client));
 
         }
 

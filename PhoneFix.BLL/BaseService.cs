@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace PhoneFix.BLL
 {
-    public class BaseService
+    public class BaseService 
     {
         public phonefixDBEntities DbContext = new phonefixDBEntities();
+
+        
     }
 }

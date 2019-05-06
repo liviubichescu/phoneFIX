@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Liviu\source\repos\NTTDataWebFhone\PhoneFix.DAL\PhoneFixModels.edmx'. 
+﻿// T4 code generation is enabled for model 'H:\C# projects\PROIECT\NTTDataWebFhone\PhoneFix.DAL\PhoneFixModels.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

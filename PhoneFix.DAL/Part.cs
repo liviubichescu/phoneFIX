@@ -25,7 +25,6 @@ namespace PhoneFix.DAL
         public string partName { get; set; }
         public decimal price { get; set; }
     
-        public virtual RepairSheet RepairSheet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Workmanship> Workmanships { get; set; }
     }

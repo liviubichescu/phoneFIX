@@ -49,15 +49,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseService.cs" />
-    <Compile Include="Conversions\ConvertDTOtoMODEL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Client\DTO\ClientDTO.cs" />
-    <Compile Include="Services\Client\ClientServices.cs" />
+    <Compile Include="Services\AuthService\AuthService.cs" />
+    <Compile Include="Services\AuthService\UserModelDTO\UserDTO.cs" />
+    <Compile Include="Services\ClientService\ClientModelDTO\ClientDTO.cs" />
+    <Compile Include="Services\ClientService\ClientModelDTO\ClientListDTO.cs" />
+    <Compile Include="Services\ClientService\ClientServices.cs" />
+    <Compile Include="Services\PhoneService\PhoneModelDTO\PhoneDTO.cs" />
+    <Compile Include="Services\PhoneService\PhoneServices.cs" />
+    <Compile Include="Services\ServSheetService\ServSheetModelDTO\ServSheetDTO.cs" />
+    <Compile Include="Services\ServSheetService\ServSheetServices.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\Phone\PhoneDTO\" />
-    <Folder Include="Services\User\UserDTO\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

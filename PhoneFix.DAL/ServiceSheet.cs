@@ -20,7 +20,7 @@ namespace PhoneFix.DAL
             this.RepairSheets = new HashSet<RepairSheet>();
         }
     
-        public int serviceID { get; set; }
+        public int ID_Service { get; set; }
         public int clientID { get; set; }
         public string claimed_defect { get; set; }
         public string phone_description_on_reception { get; set; }

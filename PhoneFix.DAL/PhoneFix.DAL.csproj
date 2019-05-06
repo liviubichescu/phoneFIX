@@ -84,9 +84,6 @@
     <Compile Include="ServiceSheet.cs">
       <DependentUpon>PhoneFixModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>PhoneFixModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>PhoneFixModels.tt</DependentUpon>
     </Compile>

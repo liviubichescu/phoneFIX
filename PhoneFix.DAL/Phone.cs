@@ -9,8 +9,6 @@
 
 namespace PhoneFix.DAL
 {
-    using System;
-    using System.Collections.Generic;
     
     public partial class Phone
     {

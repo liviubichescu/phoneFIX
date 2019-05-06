@@ -23,5 +23,6 @@ namespace PhoneFix.DAL
         public int permisionID { get; set; }
     
         public virtual Permision Permision { get; set; }
+
     }
 }

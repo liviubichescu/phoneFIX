@@ -5,18 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="a7559be5e6c54d3099e5f7e95973c3c2" Name="Diagram1">
-        <EntityTypeShape EntityType="phonefixDBModel.Client" Width="1.5" PointX="0.75" PointY="2.625" />
-        <EntityTypeShape EntityType="phonefixDBModel.Part" Width="1.5" PointX="7.5" PointY="4.375" />
-        <EntityTypeShape EntityType="phonefixDBModel.Permision" Width="1.5" PointX="0.75" PointY="8.375" />
-        <EntityTypeShape EntityType="phonefixDBModel.Phone" Width="1.5" PointX="3" PointY="1.125" />
-        <EntityTypeShape EntityType="phonefixDBModel.RepairSheet" Width="1.5" PointX="5.25" PointY="4" />
-        <EntityTypeShape EntityType="phonefixDBModel.ServiceSheet" Width="1.5" PointX="3" PointY="4.125" />
-        <EntityTypeShape EntityType="phonefixDBModel.sysdiagram" Width="1.5" PointX="5.75" PointY="0.75" />
-        <EntityTypeShape EntityType="phonefixDBModel.User" Width="1.5" PointX="3" PointY="8" />
-        <EntityTypeShape EntityType="phonefixDBModel.Workmanship" Width="1.5" PointX="9.75" PointY="4.125" />
+        <EntityTypeShape EntityType="phonefixDBModel.Client" Width="1.5" PointX="0.75" PointY="3" />
+        <EntityTypeShape EntityType="phonefixDBModel.Part" Width="1.5" PointX="5.25" PointY="0.75" />
+        <EntityTypeShape EntityType="phonefixDBModel.Permision" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="phonefixDBModel.Phone" Width="1.5" PointX="3" PointY="1.5" />
+        <EntityTypeShape EntityType="phonefixDBModel.RepairSheet" Width="1.5" PointX="5.25" PointY="4.5" />
+        <EntityTypeShape EntityType="phonefixDBModel.ServiceSheet" Width="1.5" PointX="3" PointY="4.5" />
+        <EntityTypeShape EntityType="phonefixDBModel.User" Width="1.5" PointX="3" PointY="8.375" />
+        <EntityTypeShape EntityType="phonefixDBModel.Workmanship" Width="1.5" PointX="7.5" PointY="4.5" />
         <AssociationConnector Association="phonefixDBModel.FK_Phone_Client" />
         <AssociationConnector Association="phonefixDBModel.FK_ServiceSheet_Client" />
-        <AssociationConnector Association="phonefixDBModel.FK_Parts_RepairSheet" />
         <AssociationConnector Association="phonefixDBModel.FK_Workmanship_Parts" />
         <AssociationConnector Association="phonefixDBModel.FK_User_Permisions" />
         <AssociationConnector Association="phonefixDBModel.FK_RepairSheet_ServiceSheet" />

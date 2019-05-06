@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhoneFix.BLL.Services.Client.DTO
+namespace PhoneFix.BLL.Services.ClientModelDTO
 {
     public class ClientDTO
     {

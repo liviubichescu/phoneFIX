@@ -31,8 +31,8 @@ namespace PhoneFix.DAL
         public virtual DbSet<Phone> Phones { get; set; }
         public virtual DbSet<RepairSheet> RepairSheets { get; set; }
         public virtual DbSet<ServiceSheet> ServiceSheets { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Workmanship> Workmanships { get; set; }
+        public object User { get; set; }
     }
 }
