@@ -10,7 +10,5 @@ namespace PhoneFix.BLL
     public class BaseService 
     {
         public phonefixDBEntities DbContext = new phonefixDBEntities();
-
-        
     }
 }

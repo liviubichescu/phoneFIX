@@ -12,13 +12,12 @@ namespace PhoneFix.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Part
+    public partial class sysdiagram
     {
-        public int partsID { get; set; }
-        public int ID_repair { get; set; }
-        public string partName { get; set; }
-        public decimal price { get; set; }
-    
-        public virtual RepairSheet RepairSheet { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

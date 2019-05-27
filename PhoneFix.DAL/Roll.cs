@@ -12,23 +12,20 @@ namespace PhoneFix.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class ServiceSheet
+    public partial class Roll
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ServiceSheet()
+        public Roll()
         {
-            this.RepairSheets = new HashSet<RepairSheet>();
+            this.Users = new HashSet<User>();
         }
     
-        public int ID_Service { get; set; }
-        public int phoneID { get; set; }
-        public string claimed_defect { get; set; }
-        public string phone_description_on_reception { get; set; }
-        public string accesories { get; set; }
-        public System.DateTime date { get; set; }
+        public int ID_Roll { get; set; }
+        public string Name { get; set; }
+        public Nullable<int> permisionID { get; set; }
     
-        public virtual Phone Phone { get; set; }
+        public virtual Permision Permision { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RepairSheet> RepairSheets { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

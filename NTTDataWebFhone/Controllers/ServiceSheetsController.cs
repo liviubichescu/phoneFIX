@@ -4,7 +4,7 @@ using PhoneFix.BLL.Services.ServSheetService.ServSheetModelDTO;
 
 namespace NTTDataWebFhone.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ServiceSheetsController : ApiController
     {
 
@@ -12,9 +12,15 @@ namespace NTTDataWebFhone.Controllers
 
 
         [HttpGet]
-        public IHttpActionResult GetServiceSheets()
+        public IHttpActionResult GetServiceSheetList()
         {
-            return Ok(serviceSheetService.GetAllServiceSheet());
+            return Ok(serviceSheetService.GetServiceSheetList());
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetDetailServiceSheet(int id)
+        {
+            return Ok(serviceSheetService.GetDetailsServiceSheet(id));
         }
 
 
@@ -26,19 +32,19 @@ namespace NTTDataWebFhone.Controllers
                 return BadRequest(ModelState);
             }
             serviceSheetService.UpdateServiceSheet(id, sheetDto);
-            return Ok("Service sheeet updated! " + sheetDto);
+            return Ok("Service sheeet updated! ");
         }
 
 
         [HttpPost]
-        public IHttpActionResult AddServiceSheet(ServSheetDTO serviceSheetDto)
+        public IHttpActionResult AddServiceSheet(ServSheetBaseDTO serviceSheetDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            System.Diagnostics.Debug.WriteLine("This is my AddPhone() messaageeeeee!!!! " + serviceSheetDto);
+            //System.Diagnostics.Debug.WriteLine("This is my AddServiceSheet() messaageeeeee!!!! " + serviceSheetDto);
 
             serviceSheetService.AddServiceSheet(serviceSheetDto);
 
@@ -49,7 +55,7 @@ namespace NTTDataWebFhone.Controllers
         [HttpDelete]
         public IHttpActionResult DeleteServiceSheet(int id)
         {
-            System.Diagnostics.Debug.WriteLine("This is my DeletePhone() messaageeeeee!!!! " + id);
+            //System.Diagnostics.Debug.WriteLine("This is my DeleteServiceSheet() messaageeeeee!!!! " + id);
 
             serviceSheetService.DeleteServiceSheet(id);
 
@@ -61,9 +67,9 @@ namespace NTTDataWebFhone.Controllers
         [HttpGet]
         public IHttpActionResult GetServiceSheetByClientId(int id)
         {
-            System.Diagnostics.Debug.WriteLine("This is my GetServiceSheetByClientId() messaageeeeee!!!! and id = " + id);
+            //System.Diagnostics.Debug.WriteLine("This is my GetServiceSheetByClientId() messaageeeeee!!!! and id = " + id);
 
-            return Ok(serviceSheetService.GetServiceSheetByClientId(id));
+            return Ok(serviceSheetService.GetServiceSheetByPhoneId(id));
         }
 
         //// method for finding a client name based on my client ID

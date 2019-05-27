@@ -9,9 +9,17 @@
 
 namespace PhoneFix.DAL
 {
+    using System;
+    using System.Collections.Generic;
     
     public partial class Phone
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Phone()
+        {
+            this.ServiceSheets = new HashSet<ServiceSheet>();
+        }
+    
         public int phoneID { get; set; }
         public int clientID { get; set; }
         public string IMEI { get; set; }
@@ -19,5 +27,7 @@ namespace PhoneFix.DAL
         public string type { get; set; }
     
         public virtual Client Client { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ServiceSheet> ServiceSheets { get; set; }
     }
 }

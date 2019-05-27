@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PhoneFix.DAL;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace PhoneFix.BLL.Services.AuthService.UserModelDTO
 {
@@ -28,7 +30,7 @@ namespace PhoneFix.BLL.Services.AuthService.UserModelDTO
         //[Display(Name = "Password")]
         public string password { get; set; }
 
-        public int permisionID { get; set; }
+        public Nullable<int> ID_Roll { get; set; }
 
 
     }

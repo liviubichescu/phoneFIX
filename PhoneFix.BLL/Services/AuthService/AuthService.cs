@@ -1,4 +1,6 @@
-﻿using PhoneFix.BLL.Services.AuthService.UserModelDTO;
+﻿using PhoneFix.BLL.Services.AuthService.PermisionDTO;
+using PhoneFix.BLL.Services.AuthService.RollDTO;
+using PhoneFix.BLL.Services.AuthService.UserModelDTO;
 using PhoneFix.DAL;
 using System;
 using System.Collections.Generic;
@@ -27,10 +29,10 @@ namespace PhoneFix.BLL.Services.AuthService
                 email = uDto.email,
                 username = uDto.username,
                 password = uDto.password,
-                permisionID = uDto.permisionID
+                ID_Roll = uDto.ID_Roll
             };
 
-            var result = DbContext.Users.Add(user);
+            var result =  DbContext.Users.Add(user);
             DbContext.SaveChanges();
 
             return result;
@@ -45,7 +47,70 @@ namespace PhoneFix.BLL.Services.AuthService
             return db;
         }
 
+        public UserDisplayDTO getLogedUser(int id)
+        {
+            var user = DbContext.Users.Find(id);
+            if (user == null)
+                return null;
 
+            return new UserDisplayDTO
+            {
+                firstnname = user.firstnname,
+                lastname = user.lastname,
+                email = user.email
+            };
+        }
+
+        public RollModelDTO getRollForUser(int userID)
+        {
+
+            var rolle = (from user in DbContext.Users
+                             join roll in DbContext.Rolls on user.ID_Roll equals roll.ID_Roll
+                             where user.userID == userID
+                             select roll).FirstOrDefault();
+            if (rolle != null)
+            {
+                return new RollModelDTO
+                {
+                    ID_Roll = rolle.ID_Roll,
+                    Name = rolle.Name,
+                    permisionID = rolle.permisionID
+
+                };
+            }
+            return null;            
+        }
+
+        public PermisionModelDTO getPermisionForUser(int userID)
+        {
+
+            var permission = (from user in DbContext.Users
+                        join roll in DbContext.Rolls on user.ID_Roll equals roll.ID_Roll
+                        where user.userID == userID
+                        select roll).FirstOrDefault();
+            if (permission != null)
+            {
+                var perms = (from perm in DbContext.Permisions
+                             join roll in DbContext.Rolls on perm.permisionID equals roll.permisionID
+                             where perm.permisionID == permission.permisionID
+                             select perm).FirstOrDefault();
+
+                return new PermisionModelDTO
+                {
+                    permisionID = perms.permisionID,
+                    viewClients = perms.viewClients,
+                    viewPhones = perms.viewPhones,
+                    viewService = perms.viewService,
+                    viewRepair = perms.viewRepair,
+                    addClient = perms.addClient,
+                    addPhones = perms.addPhones,
+                    addService = perms.addService,
+                    addRepair = perms.addRepair
+                };
+            }
+            return null;
+            
+        }
 
     }
 }

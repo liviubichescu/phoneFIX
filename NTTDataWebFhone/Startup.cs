@@ -1,8 +1,12 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json;
 using NTTDataWebFhone.Auth;
 using Owin;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,6 +18,7 @@ namespace NTTDataWebFhone
 {
     public class Startup
     {
+
         public void Configuration(IAppBuilder app)
         {
             ConfigureOAuth(app);
@@ -38,6 +43,5 @@ namespace NTTDataWebFhone
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
 
         }
-
     }
 }

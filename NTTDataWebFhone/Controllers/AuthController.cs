@@ -1,4 +1,7 @@
 ﻿using PhoneFix.BLL.Services.AuthService;
+using PhoneFix.BLL.Services.AuthService.PermisionDTO;
+using PhoneFix.BLL.Services.AuthService.RollDTO;
+using PhoneFix.BLL.Services.UserService;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -14,21 +17,61 @@ namespace NTTDataWebFhone.Controllers
         // returneaza id-ul userului logat din DB
         private int GetUserID()
         {
-            var identity = User as ClaimsPrincipal;
-            var value = identity.Claims.FirstOrDefault(x => x.Type == "sub").Value;
-            System.Diagnostics.Debug.WriteLine("This is my value" + value);
+            System.Diagnostics.Debug.WriteLine("This is GetUserID()");
+            string value;
+            try
+            {
+                var identity = User as ClaimsPrincipal;
+                value = identity.Claims.FirstOrDefault(x => x.Type == "sub").Value;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+            
             return Convert.ToInt32(value);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
-        public IHttpActionResult Test()
+        public IHttpActionResult getLogedUser()
         {   
             // facem call pe test ar trebui sa avem si id-ul userului care il apeleaza
             int userID = GetUserID();
-            System.Diagnostics.Debug.WriteLine("UserID = " + userID);
-            return Ok("Works");
+
+            return Ok(AuthService.getLogedUser(userID));
         }
+
+        //[Authorize]
+        [HttpGet]
+        public IHttpActionResult getUserRoll()
+        {
+            // facem call pe test ar trebui sa avem si id-ul userului care il apeleaza
+            int userID = GetUserID();
+            if (userID == 0)
+            {
+                return Ok(new RollModelDTO());
+            }
+            
+            return Ok(AuthService.getRollForUser(userID));
+        }
+
+        //[Authorize]
+        [HttpGet]
+        public IHttpActionResult getPermisionForUser()
+        {
+            // facem call pe test ar trebui sa avem si id-ul userului care il apeleaza
+            int userID = GetUserID();
+            if (userID == 0)
+            {
+                return Ok(new PermisionModelDTO());
+            }
+
+            return Ok(AuthService.getPermisionForUser(userID));
+        }
+        
+
+
 
         [HttpGet]
         public IHttpActionResult Test1()
@@ -36,7 +79,6 @@ namespace NTTDataWebFhone.Controllers
             int userID = GetUserID();
             return Ok("Works");
         }
-
-
+        
     }
 }

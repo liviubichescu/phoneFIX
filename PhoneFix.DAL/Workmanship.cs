@@ -15,13 +15,11 @@ namespace PhoneFix.DAL
     public partial class Workmanship
     {
         public int workmanshipID { get; set; }
-        public decimal time { get; set; }
-        public decimal price { get; set; }
+        public Nullable<decimal> time { get; set; }
+        public Nullable<decimal> price { get; set; }
         public string operations { get; set; }
-        public int partsID { get; set; }
-        public int repairID { get; set; }
+        public int ID_repair { get; set; }
     
-        public virtual Part Part { get; set; }
         public virtual RepairSheet RepairSheet { get; set; }
     }
 }

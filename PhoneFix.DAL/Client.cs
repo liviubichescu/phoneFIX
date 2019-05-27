@@ -18,7 +18,6 @@ namespace PhoneFix.DAL
         public Client()
         {
             this.Phones = new HashSet<Phone>();
-            this.ServiceSheets = new HashSet<ServiceSheet>();
         }
     
         public int clientID { get; set; }
@@ -30,7 +29,5 @@ namespace PhoneFix.DAL
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Phone> Phones { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ServiceSheet> ServiceSheets { get; set; }
     }
 }

@@ -15,15 +15,23 @@ namespace NTTDataWebFhone.Controllers
         [HttpGet]
         public IHttpActionResult GetPhones()
         {
-            System.Diagnostics.Debug.WriteLine("This is my GetPhones() messaageeeeee!!!! ");
+            //System.Diagnostics.Debug.WriteLine("This is my GetPhones() messaageeeeee!!!! ");
             return Ok(phoneServices.GetPhones());
+        }
+
+        // GET: api/Phones
+        [HttpGet]
+        public IHttpActionResult GetPhonesWithOwner()
+        {
+            //System.Diagnostics.Debug.WriteLine("This is my GetPhonesWithOwner() messaageeeeee!!!! ");
+            return Ok(phoneServices.getPhonesWithOwnerName());
         }
 
         // GET: api/Phone/5
         [HttpGet]
         public IHttpActionResult GetOnePhone(int id)
         {
-            System.Diagnostics.Debug.WriteLine("This is my GetOnePhone() messaageeeeee!!!! ");
+            System.Diagnostics.Debug.WriteLine("GetOnePhone(int id) from PhonesController! id = " +id);
             return Ok(phoneServices.findPhoneById(id));
         }
 
@@ -37,7 +45,7 @@ namespace NTTDataWebFhone.Controllers
                 return BadRequest(ModelState);
             }
 
-            System.Diagnostics.Debug.WriteLine("This is my UpdatePhone() messaageeeeee!!! "+id+" phone = "+phoneDto);
+            System.Diagnostics.Debug.WriteLine("In PhonesController - UpdatePhone(); id -> " + id + " phoneDto.phoneID -> " + phoneDto.phoneID);
 
             phoneServices.UpdatePhone(id, phoneDto);
 
@@ -53,7 +61,7 @@ namespace NTTDataWebFhone.Controllers
                 return BadRequest(ModelState);
             }
 
-            System.Diagnostics.Debug.WriteLine("This is my AddPhone() messaageeeeee!!!! "+phoneDto);
+            //System.Diagnostics.Debug.WriteLine("This is my AddPhone() messaageeeeee!!!! "+phoneDto);
 
             phoneServices.AddPhone(phoneDto);
 
@@ -64,7 +72,7 @@ namespace NTTDataWebFhone.Controllers
         [HttpDelete]
         public IHttpActionResult DeletePhone(int id)
         {
-            System.Diagnostics.Debug.WriteLine("This is my DeletePhone() messaageeeeee!!!! " + id);
+            //System.Diagnostics.Debug.WriteLine("This is my DeletePhone() messaageeeeee!!!! " + id);
 
             phoneServices.DeletePhone(id);
 
@@ -76,10 +84,8 @@ namespace NTTDataWebFhone.Controllers
         [HttpGet]
         public IHttpActionResult GetClientPhones(int id)
         {
-            System.Diagnostics.Debug.WriteLine("This is my GetClientPhones() messaageeeeee!!!! and id = "+id);
-
+            //System.Diagnostics.Debug.WriteLine("This is my GetClientPhones() messaageeeeee!!!! and id = "+id);
             
-
             return Ok(phoneServices.GetClientPhones(id));
         }
 

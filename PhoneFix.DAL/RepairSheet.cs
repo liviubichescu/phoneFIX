@@ -17,6 +17,7 @@ namespace PhoneFix.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RepairSheet()
         {
+            this.Parts = new HashSet<Part>();
             this.Workmanships = new HashSet<Workmanship>();
         }
     
@@ -25,8 +26,10 @@ namespace PhoneFix.DAL
         public Nullable<decimal> totalCost { get; set; }
         public Nullable<System.DateTime> estimatedDate { get; set; }
         public string status { get; set; }
-        public Nullable<int> service_ID { get; set; }
+        public int service_ID { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Part> Parts { get; set; }
         public virtual ServiceSheet ServiceSheet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Workmanship> Workmanships { get; set; }

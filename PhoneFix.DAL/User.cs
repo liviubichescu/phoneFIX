@@ -20,9 +20,8 @@ namespace PhoneFix.DAL
         public string email { get; set; }
         public string username { get; set; }
         public string password { get; set; }
-        public int permisionID { get; set; }
+        public Nullable<int> ID_Roll { get; set; }
     
-        public virtual Permision Permision { get; set; }
-
+        public virtual Roll Roll { get; set; }
     }
 }

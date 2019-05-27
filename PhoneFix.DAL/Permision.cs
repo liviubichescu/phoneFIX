@@ -17,14 +17,20 @@ namespace PhoneFix.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Permision()
         {
-            this.Users = new HashSet<User>();
+            this.Rolls = new HashSet<Roll>();
         }
     
         public int permisionID { get; set; }
-        public bool readPerm { get; set; }
-        public bool writePerm { get; set; }
+        public Nullable<bool> viewClients { get; set; }
+        public Nullable<bool> viewPhones { get; set; }
+        public Nullable<bool> viewService { get; set; }
+        public Nullable<bool> viewRepair { get; set; }
+        public Nullable<bool> addClient { get; set; }
+        public Nullable<bool> addPhones { get; set; }
+        public Nullable<bool> addService { get; set; }
+        public Nullable<bool> addRepair { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<Roll> Rolls { get; set; }
     }
 }

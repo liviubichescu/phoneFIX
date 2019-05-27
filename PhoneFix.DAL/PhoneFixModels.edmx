@@ -21,17 +21,23 @@
             <PropertyRef Name="partsID" />
           </Key>
           <Property Name="partsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="repairID" Type="int" Nullable="false" />
+          <Property Name="ID_repair" Type="int" Nullable="false" />
           <Property Name="partName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
-        <EntityType Name="Permisions">
+        <EntityType Name="Permision">
           <Key>
             <PropertyRef Name="permisionID" />
           </Key>
           <Property Name="permisionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="readPerm" Type="bit" Nullable="false" />
-          <Property Name="writePerm" Type="bit" Nullable="false" />
+          <Property Name="viewClients" Type="bit" />
+          <Property Name="viewPhones" Type="bit" />
+          <Property Name="viewService" Type="bit" />
+          <Property Name="viewRepair" Type="bit" />
+          <Property Name="addClient" Type="bit" />
+          <Property Name="addPhones" Type="bit" />
+          <Property Name="addService" Type="bit" />
+          <Property Name="addRepair" Type="bit" />
         </EntityType>
         <EntityType Name="Phone">
           <Key>
@@ -48,22 +54,40 @@
             <PropertyRef Name="ID_repair" />
           </Key>
           <Property Name="ID_repair" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="defect_conclusion" Type="nchar" MaxLength="10" />
+          <Property Name="defect_conclusion" Type="varchar" MaxLength="5000" />
           <Property Name="totalCost" Type="decimal" Precision="18" Scale="2" />
           <Property Name="estimatedDate" Type="date" />
           <Property Name="status" Type="varchar" MaxLength="50" />
-          <Property Name="service_ID" Type="int" />
+          <Property Name="service_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rolls">
+          <Key>
+            <PropertyRef Name="ID_Roll" />
+          </Key>
+          <Property Name="ID_Roll" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="permisionID" Type="int" />
         </EntityType>
         <EntityType Name="ServiceSheet">
           <Key>
             <PropertyRef Name="ID_Service" />
           </Key>
           <Property Name="ID_Service" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="clientID" Type="int" Nullable="false" />
+          <Property Name="phoneID" Type="int" Nullable="false" />
           <Property Name="claimed_defect" Type="varchar" MaxLength="50" />
           <Property Name="phone_description_on_reception" Type="varchar" MaxLength="50" />
           <Property Name="accesories" Type="varchar" MaxLength="50" />
           <Property Name="date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -75,19 +99,30 @@
           <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="permisionID" Type="int" Nullable="false" />
+          <Property Name="ID_Roll" Type="int" />
         </EntityType>
         <EntityType Name="Workmanship">
           <Key>
             <PropertyRef Name="workmanshipID" />
           </Key>
           <Property Name="workmanshipID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="time" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="operations" Type="varchar" MaxLength="500" Nullable="false" />
-          <Property Name="partsID" Type="int" Nullable="false" />
-          <Property Name="repairID" Type="int" Nullable="false" />
+          <Property Name="time" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="operations" Type="varchar" MaxLength="500" />
+          <Property Name="ID_repair" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Parts_RepairSheet">
+          <End Role="RepairSheet" Type="Self.RepairSheet" Multiplicity="1" />
+          <End Role="Parts" Type="Self.Parts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepairSheet">
+              <PropertyRef Name="ID_repair" />
+            </Principal>
+            <Dependent Role="Parts">
+              <PropertyRef Name="ID_repair" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Phone_Client">
           <End Role="Client" Type="Self.Client" Multiplicity="1" />
           <End Role="Phone" Type="Self.Phone" Multiplicity="*" />
@@ -101,7 +136,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RepairSheet_ServiceSheet">
-          <End Role="ServiceSheet" Type="Self.ServiceSheet" Multiplicity="0..1" />
+          <End Role="ServiceSheet" Type="Self.ServiceSheet" Multiplicity="1" />
           <End Role="RepairSheet" Type="Self.RepairSheet" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ServiceSheet">
@@ -112,39 +147,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ServiceSheet_Client">
-          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+        <Association Name="FK_Rolls_Permision">
+          <End Role="Permision" Type="Self.Permision" Multiplicity="0..1" />
+          <End Role="Rolls" Type="Self.Rolls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permision">
+              <PropertyRef Name="permisionID" />
+            </Principal>
+            <Dependent Role="Rolls">
+              <PropertyRef Name="permisionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceSheet_Phone">
+          <End Role="Phone" Type="Self.Phone" Multiplicity="1" />
           <End Role="ServiceSheet" Type="Self.ServiceSheet" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Client">
-              <PropertyRef Name="clientID" />
+            <Principal Role="Phone">
+              <PropertyRef Name="phoneID" />
             </Principal>
             <Dependent Role="ServiceSheet">
-              <PropertyRef Name="clientID" />
+              <PropertyRef Name="phoneID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_Permisions">
-          <End Role="Permisions" Type="Self.Permisions" Multiplicity="1" />
+        <Association Name="FK_User_Rolls">
+          <End Role="Rolls" Type="Self.Rolls" Multiplicity="0..1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Permisions">
-              <PropertyRef Name="permisionID" />
+            <Principal Role="Rolls">
+              <PropertyRef Name="ID_Roll" />
             </Principal>
             <Dependent Role="User">
-              <PropertyRef Name="permisionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Workmanship_Parts">
-          <End Role="Parts" Type="Self.Parts" Multiplicity="1" />
-          <End Role="Workmanship" Type="Self.Workmanship" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Parts">
-              <PropertyRef Name="partsID" />
-            </Principal>
-            <Dependent Role="Workmanship">
-              <PropertyRef Name="partsID" />
+              <PropertyRef Name="ID_Roll" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -156,19 +191,25 @@
               <PropertyRef Name="ID_repair" />
             </Principal>
             <Dependent Role="Workmanship">
-              <PropertyRef Name="repairID" />
+              <PropertyRef Name="ID_repair" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="phonefixDBModelStoreContainer">
           <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Parts" EntityType="Self.Parts" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Permisions" EntityType="Self.Permisions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permision" EntityType="Self.Permision" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Phone" EntityType="Self.Phone" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RepairSheet" EntityType="Self.RepairSheet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rolls" EntityType="Self.Rolls" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiceSheet" EntityType="Self.ServiceSheet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Workmanship" EntityType="Self.Workmanship" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Parts_RepairSheet" Association="Self.FK_Parts_RepairSheet">
+            <End Role="RepairSheet" EntitySet="RepairSheet" />
+            <End Role="Parts" EntitySet="Parts" />
+          </AssociationSet>
           <AssociationSet Name="FK_Phone_Client" Association="Self.FK_Phone_Client">
             <End Role="Client" EntitySet="Client" />
             <End Role="Phone" EntitySet="Phone" />
@@ -177,17 +218,17 @@
             <End Role="ServiceSheet" EntitySet="ServiceSheet" />
             <End Role="RepairSheet" EntitySet="RepairSheet" />
           </AssociationSet>
-          <AssociationSet Name="FK_ServiceSheet_Client" Association="Self.FK_ServiceSheet_Client">
-            <End Role="Client" EntitySet="Client" />
+          <AssociationSet Name="FK_Rolls_Permision" Association="Self.FK_Rolls_Permision">
+            <End Role="Permision" EntitySet="Permision" />
+            <End Role="Rolls" EntitySet="Rolls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceSheet_Phone" Association="Self.FK_ServiceSheet_Phone">
+            <End Role="Phone" EntitySet="Phone" />
             <End Role="ServiceSheet" EntitySet="ServiceSheet" />
           </AssociationSet>
-          <AssociationSet Name="FK_User_Permisions" Association="Self.FK_User_Permisions">
-            <End Role="Permisions" EntitySet="Permisions" />
+          <AssociationSet Name="FK_User_Rolls" Association="Self.FK_User_Rolls">
+            <End Role="Rolls" EntitySet="Rolls" />
             <End Role="User" EntitySet="User" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Workmanship_Parts" Association="Self.FK_Workmanship_Parts">
-            <End Role="Parts" EntitySet="Parts" />
-            <End Role="Workmanship" EntitySet="Workmanship" />
           </AssociationSet>
           <AssociationSet Name="FK_Workmanship_RepairSheet" Association="Self.FK_Workmanship_RepairSheet">
             <End Role="RepairSheet" EntitySet="RepairSheet" />
@@ -204,24 +245,26 @@
           <EntitySet Name="Permisions" EntityType="phonefixDBModel.Permision" />
           <EntitySet Name="Phones" EntityType="phonefixDBModel.Phone" />
           <EntitySet Name="RepairSheets" EntityType="phonefixDBModel.RepairSheet" />
+          <EntitySet Name="Rolls" EntityType="phonefixDBModel.Roll" />
           <EntitySet Name="ServiceSheets" EntityType="phonefixDBModel.ServiceSheet" />
+          <EntitySet Name="sysdiagrams" EntityType="phonefixDBModel.sysdiagram" />
           <EntitySet Name="Users" EntityType="phonefixDBModel.User" />
           <EntitySet Name="Workmanships" EntityType="phonefixDBModel.Workmanship" />
           <AssociationSet Name="FK_Phone_Client" Association="phonefixDBModel.FK_Phone_Client">
             <End Role="Client" EntitySet="Clients" />
             <End Role="Phone" EntitySet="Phones" />
           </AssociationSet>
-          <AssociationSet Name="FK_ServiceSheet_Client" Association="phonefixDBModel.FK_ServiceSheet_Client">
-            <End Role="Client" EntitySet="Clients" />
-            <End Role="ServiceSheet" EntitySet="ServiceSheets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Workmanship_Parts" Association="phonefixDBModel.FK_Workmanship_Parts">
+          <AssociationSet Name="FK_Parts_RepairSheet" Association="phonefixDBModel.FK_Parts_RepairSheet">
+            <End Role="RepairSheet" EntitySet="RepairSheets" />
             <End Role="Part" EntitySet="Parts" />
-            <End Role="Workmanship" EntitySet="Workmanships" />
           </AssociationSet>
-          <AssociationSet Name="FK_User_Permisions" Association="phonefixDBModel.FK_User_Permisions">
+          <AssociationSet Name="FK_Rolls_Permision" Association="phonefixDBModel.FK_Rolls_Permision">
             <End Role="Permision" EntitySet="Permisions" />
-            <End Role="User" EntitySet="Users" />
+            <End Role="Roll" EntitySet="Rolls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceSheet_Phone" Association="phonefixDBModel.FK_ServiceSheet_Phone">
+            <End Role="Phone" EntitySet="Phones" />
+            <End Role="ServiceSheet" EntitySet="ServiceSheets" />
           </AssociationSet>
           <AssociationSet Name="FK_RepairSheet_ServiceSheet" Association="phonefixDBModel.FK_RepairSheet_ServiceSheet">
             <End Role="ServiceSheet" EntitySet="ServiceSheets" />
@@ -230,6 +273,10 @@
           <AssociationSet Name="FK_Workmanship_RepairSheet" Association="phonefixDBModel.FK_Workmanship_RepairSheet">
             <End Role="RepairSheet" EntitySet="RepairSheets" />
             <End Role="Workmanship" EntitySet="Workmanships" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Rolls" Association="phonefixDBModel.FK_User_Rolls">
+            <End Role="Roll" EntitySet="Rolls" />
+            <End Role="User" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Client">
@@ -243,26 +290,31 @@
           <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="contactNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Phones" Relationship="phonefixDBModel.FK_Phone_Client" FromRole="Client" ToRole="Phone" />
-          <NavigationProperty Name="ServiceSheets" Relationship="phonefixDBModel.FK_ServiceSheet_Client" FromRole="Client" ToRole="ServiceSheet" />
         </EntityType>
         <EntityType Name="Part">
           <Key>
             <PropertyRef Name="partsID" />
           </Key>
           <Property Name="partsID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="repairID" Type="Int32" Nullable="false" />
+          <Property Name="ID_repair" Type="Int32" Nullable="false" />
           <Property Name="partName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="price" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <NavigationProperty Name="Workmanships" Relationship="phonefixDBModel.FK_Workmanship_Parts" FromRole="Part" ToRole="Workmanship" />
+          <NavigationProperty Name="RepairSheet" Relationship="phonefixDBModel.FK_Parts_RepairSheet" FromRole="Part" ToRole="RepairSheet" />
         </EntityType>
         <EntityType Name="Permision">
           <Key>
             <PropertyRef Name="permisionID" />
           </Key>
           <Property Name="permisionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="readPerm" Type="Boolean" Nullable="false" />
-          <Property Name="writePerm" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="phonefixDBModel.FK_User_Permisions" FromRole="Permision" ToRole="User" />
+          <Property Name="viewClients" Type="Boolean" />
+          <Property Name="viewPhones" Type="Boolean" />
+          <Property Name="viewService" Type="Boolean" />
+          <Property Name="viewRepair" Type="Boolean" />
+          <Property Name="addClient" Type="Boolean" />
+          <Property Name="addPhones" Type="Boolean" />
+          <Property Name="addService" Type="Boolean" />
+          <Property Name="addRepair" Type="Boolean" />
+          <NavigationProperty Name="Rolls" Relationship="phonefixDBModel.FK_Rolls_Permision" FromRole="Permision" ToRole="Roll" />
         </EntityType>
         <EntityType Name="Phone">
           <Key>
@@ -274,32 +326,54 @@
           <Property Name="brand" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Client" Relationship="phonefixDBModel.FK_Phone_Client" FromRole="Phone" ToRole="Client" />
+          <NavigationProperty Name="ServiceSheets" Relationship="phonefixDBModel.FK_ServiceSheet_Phone" FromRole="Phone" ToRole="ServiceSheet" />
         </EntityType>
         <EntityType Name="RepairSheet">
           <Key>
             <PropertyRef Name="ID_repair" />
           </Key>
           <Property Name="ID_repair" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="defect_conclusion" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="defect_conclusion" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
           <Property Name="totalCost" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="estimatedDate" Type="DateTime" Precision="0" />
           <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="service_ID" Type="Int32" />
+          <Property Name="service_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Parts" Relationship="phonefixDBModel.FK_Parts_RepairSheet" FromRole="RepairSheet" ToRole="Part" />
           <NavigationProperty Name="ServiceSheet" Relationship="phonefixDBModel.FK_RepairSheet_ServiceSheet" FromRole="RepairSheet" ToRole="ServiceSheet" />
           <NavigationProperty Name="Workmanships" Relationship="phonefixDBModel.FK_Workmanship_RepairSheet" FromRole="RepairSheet" ToRole="Workmanship" />
+        </EntityType>
+        <EntityType Name="Roll">
+          <Key>
+            <PropertyRef Name="ID_Roll" />
+          </Key>
+          <Property Name="ID_Roll" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="permisionID" Type="Int32" />
+          <NavigationProperty Name="Permision" Relationship="phonefixDBModel.FK_Rolls_Permision" FromRole="Roll" ToRole="Permision" />
+          <NavigationProperty Name="Users" Relationship="phonefixDBModel.FK_User_Rolls" FromRole="Roll" ToRole="User" />
         </EntityType>
         <EntityType Name="ServiceSheet">
           <Key>
             <PropertyRef Name="ID_Service" />
           </Key>
           <Property Name="ID_Service" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="clientID" Type="Int32" Nullable="false" />
+          <Property Name="phoneID" Type="Int32" Nullable="false" />
           <Property Name="claimed_defect" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="phone_description_on_reception" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="accesories" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Client" Relationship="phonefixDBModel.FK_ServiceSheet_Client" FromRole="ServiceSheet" ToRole="Client" />
+          <NavigationProperty Name="Phone" Relationship="phonefixDBModel.FK_ServiceSheet_Phone" FromRole="ServiceSheet" ToRole="Phone" />
           <NavigationProperty Name="RepairSheets" Relationship="phonefixDBModel.FK_RepairSheet_ServiceSheet" FromRole="ServiceSheet" ToRole="RepairSheet" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -311,20 +385,18 @@
           <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="permisionID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Permision" Relationship="phonefixDBModel.FK_User_Permisions" FromRole="User" ToRole="Permision" />
+          <Property Name="ID_Roll" Type="Int32" />
+          <NavigationProperty Name="Roll" Relationship="phonefixDBModel.FK_User_Rolls" FromRole="User" ToRole="Roll" />
         </EntityType>
         <EntityType Name="Workmanship">
           <Key>
             <PropertyRef Name="workmanshipID" />
           </Key>
           <Property Name="workmanshipID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="time" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="price" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="operations" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="partsID" Type="Int32" Nullable="false" />
-          <Property Name="repairID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Part" Relationship="phonefixDBModel.FK_Workmanship_Parts" FromRole="Workmanship" ToRole="Part" />
+          <Property Name="time" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="operations" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID_repair" Type="Int32" Nullable="false" />
           <NavigationProperty Name="RepairSheet" Relationship="phonefixDBModel.FK_Workmanship_RepairSheet" FromRole="Workmanship" ToRole="RepairSheet" />
         </EntityType>
         <Association Name="FK_Phone_Client">
@@ -339,44 +411,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ServiceSheet_Client">
-          <End Type="phonefixDBModel.Client" Role="Client" Multiplicity="1" />
-          <End Type="phonefixDBModel.ServiceSheet" Role="ServiceSheet" Multiplicity="*" />
+        <Association Name="FK_Parts_RepairSheet">
+          <End Type="phonefixDBModel.RepairSheet" Role="RepairSheet" Multiplicity="1" />
+          <End Type="phonefixDBModel.Part" Role="Part" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Client">
-              <PropertyRef Name="clientID" />
+            <Principal Role="RepairSheet">
+              <PropertyRef Name="ID_repair" />
             </Principal>
-            <Dependent Role="ServiceSheet">
-              <PropertyRef Name="clientID" />
+            <Dependent Role="Part">
+              <PropertyRef Name="ID_repair" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Workmanship_Parts">
-          <End Type="phonefixDBModel.Part" Role="Part" Multiplicity="1" />
-          <End Type="phonefixDBModel.Workmanship" Role="Workmanship" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Part">
-              <PropertyRef Name="partsID" />
-            </Principal>
-            <Dependent Role="Workmanship">
-              <PropertyRef Name="partsID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_User_Permisions">
-          <End Type="phonefixDBModel.Permision" Role="Permision" Multiplicity="1" />
-          <End Type="phonefixDBModel.User" Role="User" Multiplicity="*" />
+        <Association Name="FK_Rolls_Permision">
+          <End Type="phonefixDBModel.Permision" Role="Permision" Multiplicity="0..1" />
+          <End Type="phonefixDBModel.Roll" Role="Roll" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Permision">
               <PropertyRef Name="permisionID" />
             </Principal>
-            <Dependent Role="User">
+            <Dependent Role="Roll">
               <PropertyRef Name="permisionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ServiceSheet_Phone">
+          <End Type="phonefixDBModel.Phone" Role="Phone" Multiplicity="1" />
+          <End Type="phonefixDBModel.ServiceSheet" Role="ServiceSheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Phone">
+              <PropertyRef Name="phoneID" />
+            </Principal>
+            <Dependent Role="ServiceSheet">
+              <PropertyRef Name="phoneID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_RepairSheet_ServiceSheet">
-          <End Type="phonefixDBModel.ServiceSheet" Role="ServiceSheet" Multiplicity="0..1" />
+          <End Type="phonefixDBModel.ServiceSheet" Role="ServiceSheet" Multiplicity="1" />
           <End Type="phonefixDBModel.RepairSheet" Role="RepairSheet" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ServiceSheet">
@@ -395,7 +467,19 @@
               <PropertyRef Name="ID_repair" />
             </Principal>
             <Dependent Role="Workmanship">
-              <PropertyRef Name="repairID" />
+              <PropertyRef Name="ID_repair" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Rolls">
+          <End Type="phonefixDBModel.Roll" Role="Roll" Multiplicity="0..1" />
+          <End Type="phonefixDBModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roll">
+              <PropertyRef Name="ID_Roll" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="ID_Roll" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -422,16 +506,22 @@
               <MappingFragment StoreEntitySet="Parts">
                 <ScalarProperty Name="price" ColumnName="price" />
                 <ScalarProperty Name="partName" ColumnName="partName" />
-                <ScalarProperty Name="repairID" ColumnName="repairID" />
+                <ScalarProperty Name="ID_repair" ColumnName="ID_repair" />
                 <ScalarProperty Name="partsID" ColumnName="partsID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Permisions">
             <EntityTypeMapping TypeName="phonefixDBModel.Permision">
-              <MappingFragment StoreEntitySet="Permisions">
-                <ScalarProperty Name="writePerm" ColumnName="writePerm" />
-                <ScalarProperty Name="readPerm" ColumnName="readPerm" />
+              <MappingFragment StoreEntitySet="Permision">
+                <ScalarProperty Name="addRepair" ColumnName="addRepair" />
+                <ScalarProperty Name="addService" ColumnName="addService" />
+                <ScalarProperty Name="addPhones" ColumnName="addPhones" />
+                <ScalarProperty Name="addClient" ColumnName="addClient" />
+                <ScalarProperty Name="viewRepair" ColumnName="viewRepair" />
+                <ScalarProperty Name="viewService" ColumnName="viewService" />
+                <ScalarProperty Name="viewPhones" ColumnName="viewPhones" />
+                <ScalarProperty Name="viewClients" ColumnName="viewClients" />
                 <ScalarProperty Name="permisionID" ColumnName="permisionID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -459,6 +549,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Rolls">
+            <EntityTypeMapping TypeName="phonefixDBModel.Roll">
+              <MappingFragment StoreEntitySet="Rolls">
+                <ScalarProperty Name="permisionID" ColumnName="permisionID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID_Roll" ColumnName="ID_Roll" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ServiceSheets">
             <EntityTypeMapping TypeName="phonefixDBModel.ServiceSheet">
               <MappingFragment StoreEntitySet="ServiceSheet">
@@ -466,15 +565,26 @@
                 <ScalarProperty Name="accesories" ColumnName="accesories" />
                 <ScalarProperty Name="phone_description_on_reception" ColumnName="phone_description_on_reception" />
                 <ScalarProperty Name="claimed_defect" ColumnName="claimed_defect" />
-                <ScalarProperty Name="clientID" ColumnName="clientID" />
+                <ScalarProperty Name="phoneID" ColumnName="phoneID" />
                 <ScalarProperty Name="ID_Service" ColumnName="ID_Service" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="phonefixDBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="phonefixDBModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="permisionID" ColumnName="permisionID" />
+                <ScalarProperty Name="ID_Roll" ColumnName="ID_Roll" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="email" ColumnName="email" />
@@ -487,8 +597,7 @@
           <EntitySetMapping Name="Workmanships">
             <EntityTypeMapping TypeName="phonefixDBModel.Workmanship">
               <MappingFragment StoreEntitySet="Workmanship">
-                <ScalarProperty Name="repairID" ColumnName="repairID" />
-                <ScalarProperty Name="partsID" ColumnName="partsID" />
+                <ScalarProperty Name="ID_repair" ColumnName="ID_repair" />
                 <ScalarProperty Name="operations" ColumnName="operations" />
                 <ScalarProperty Name="price" ColumnName="price" />
                 <ScalarProperty Name="time" ColumnName="time" />
